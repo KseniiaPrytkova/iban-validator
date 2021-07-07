@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 
 myfile = open('data.txt', 'w')
-# myfile.write("%s\n" % 'data = ')
 
 URL = "https://www.iban.com/structure"
 r = requests.get(URL)
@@ -22,7 +21,7 @@ indices = 2, 4
 for i in range(len(data)):
     list1 = data[i]
     list1 = [i for j, i in enumerate(list1) if j not in indices]
-    myfile.write("%s\n" % list1)
+    myfile.write("%s\n" % ",".join(list1))
 
 myfile.close()
 
