@@ -40,10 +40,15 @@ def validate_iban(iban, given_country):
 
     # 1. Validating the IBAN
     print (get_integer(iban) % 97)
+    if get_integer(iban) % 97 != 1:
+        return 0
 
     # 2. Generating IBAN check digits
     iban_check_digits = list(iban[:2] + ['0', '0'] + iban[4:])
-    print (get_integer(iban_check_digits))
+    res = 98 - (get_integer(iban_check_digits) % 97)
+    if res:
+        print (res)
+
     
 if __name__ == '__main__':
     iban = '   GB82 WEST 1234 5698 7654 32    '
