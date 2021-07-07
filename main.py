@@ -18,22 +18,23 @@ def validate_iban(iban, given_country):
     # Move the four initial characters to the end of the string
     iban_rearranged = list(iban[4:] + iban[:4])
 
+    # Replace each letter in the string with two digits, thereby expanding the string, where A = 10, B = 11, ..., Z = 35
     for i in range(len(iban_rearranged)):
         if iban_rearranged[i].isalpha():
-            # print(iban_rearranged[i])
-            # print(ord(iban_rearranged[i]))
-            iban_rearranged[i] = ord(iban_rearranged[i]) - 55
+            iban_rearranged[i] = str(ord(iban_rearranged[i]) - 55)
 
-    # print("".join(iban_rearranged))
-    print(iban_rearranged)
+    # Interpret the string as a decimal integer and compute the remainder of that number on division by 97
+    if int("".join(iban_rearranged)) % 97 != 1:
+        return 0	
     
 if __name__ == '__main__':
     iban = '   GB82 WEST 1234 5698 7654 32    '
     country = 'United Kingdom'
 
-    # if validate_iban(iban.replace(" ", ""), country) == 0:
-    #     print('IBAN is not valid')
     iban = iban.replace(" ", "")
-    # print(iban)
+
     if validate_iban(iban, country) == 0:
-        print('IBAN is not valid')
+        print('IBAN is NOT valid')
+    else:
+        print('IBAN is valid')
+    
