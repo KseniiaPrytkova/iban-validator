@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 myfile = open('data.txt', 'w')
+# myfile.write("%s\n" % 'data = ')
 
 URL = "https://www.iban.com/structure"
 r = requests.get(URL)
@@ -24,3 +25,4 @@ for i in range(len(data)):
     myfile.write("%s\n" % list1)
 
 myfile.close()
+
