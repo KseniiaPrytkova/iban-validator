@@ -12,7 +12,9 @@ def modify_iban_for_analysis(iban):
     res = 0
     # Move the four initial characters to the end of the string.
     iban_rearranged = list(iban[4:] + iban[:4])
-    # Replace the letters in the string with digits, expanding the string as necessary, such that A or a = 10, B or b = 11, and Z or z = 35. Each alphabetic character is therefore replaced by 2 digits
+    # Replace the letters in the string with digits, expanding the string as necessary,
+    #  such that A or a = 10, B or b = 11, and Z or z = 35.
+    #  Each alphabetic character is therefore replaced by 2 digits
     for i in range(len(iban_rearranged)):
         if iban_rearranged[i].isalpha():
             iban_rearranged[i] = str(ord(iban_rearranged[i]) - 55)
@@ -20,11 +22,15 @@ def modify_iban_for_analysis(iban):
     return int("".join(iban_rearranged))
 
 def validate_iban(iban, given_country):
+    print (given_country)
     # Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid
     for country in iban_countries:
         if country[0] == given_country:
             if (len(iban)) != int(country[2]):
                 return 0
+        else:
+            print('Given country is not supported')
+            return 0
 
     # Generate IBAN check digits
     iban_check_digits = list(iban[:2] + ['0', '0'] + iban[4:])
