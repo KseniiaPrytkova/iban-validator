@@ -1,4 +1,5 @@
 import sys, argparse
+import unittest
 
 iban_countries = []
 
@@ -22,6 +23,7 @@ def modify_iban_for_analysis(iban):
     return int("".join(iban_rearranged))
 
 def validate_iban(iban, given_country):
+    iban = list(iban)
     country_found = False
     # Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid
     for country in iban_countries:
@@ -49,17 +51,52 @@ def validate_iban(iban, given_country):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("iban", help="IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32')", type=str)
-    parser.add_argument("country", help="Service country as a string (ex: 'United Kingdom')", type=str)
-    parser.add_argument("-t", "--test", nargs=2, type=str, action="append")
+    # parser.add_argument("iban", help="IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32')", type=str)
+    # parser.add_argument("country", help="Service country as a string (ex: 'United Kingdom')", type=str)
+    parser.add_argument("-i", "--iban",
+        help="IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32')", nargs=2, type=str, action="append")
+    parser.add_argument("-f", "--file", type=str)
+
     args = parser.parse_args()
-    print(str(args.test))
 
-    iban = args.iban
-    country = args.country
-    iban = iban.replace(" ", "")
+    if not args.iban and not args.file:
+        sys.stderr.write('No data\n')
+        sys.exit(1)
+    
+    ibans = []
+    if args.iban:
+        ibans = args.iban
+    if args.file:
+        with open(args.file) as f:
+            for ele in f:
+                line_list = ele.split(",")
+                ibans.append(line_list)
+        f.close()
+    # print(str(args.test))
 
-    if validate_iban(list(iban), country) == 0:
-        print('IBAN is NOT valid')
-    else:
-        print('IBAN is valid')
+    # iban = args.iban
+    # country = args.country
+
+    for element in ibans:
+        print(str(element))
+        iban = element[0].replace(" ", "")
+        if validate_iban(iban, element[1]) == 0:
+            print('IBAN is NOT valid')
+        else:
+            print('IBAN is valid')
+
+    # delete spaces, check is 2 args per line - read from file; clean new line
+
+class TestIban(unittest.TestCase):
+    def setUp(self):
+        iban_countries  = [['United Kingdom','GB','22'], ['Ukraine','UA','29']]
+    def tearDown(self):
+        iban_countries = []
+    def test_return_valid(self):
+        actual = validate_iban('UA903052992990004149123456789', 'Ukraine')
+        expected = 1
+        self.assertEqual(actual, expected)
+    def test_return_invalid(self):
+        actual = validate_iban('UA90305299299044004149123456789', 'Ukraine')
+        expected = 0
+        self.assertEqual(actual, expected)
