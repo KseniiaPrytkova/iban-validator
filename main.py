@@ -1,6 +1,17 @@
 import sys, argparse
 import unittest
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 iban_countries = []
 
 with open('iban-data.txt') as f:
@@ -51,12 +62,10 @@ def validate_iban(iban, given_country):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    # parser.add_argument("iban", help="IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32')", type=str)
-    # parser.add_argument("country", help="Service country as a string (ex: 'United Kingdom')", type=str)
     parser.add_argument("-i", "--iban",
-        help="IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32')", nargs=2, type=str, action="append")
+        help="2 arguments: IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32') and Service country as a string (ex: 'United Kingdom')", 
+        nargs=2, type=str, action="append")
     parser.add_argument("-f", "--file", type=str)
-
     args = parser.parse_args()
 
     if not args.iban and not args.file:
@@ -69,24 +78,22 @@ if __name__ == '__main__':
     if args.file:
         with open(args.file) as f:
             for ele in f:
-                line_list = ele.split(",")
+                line_list = [x.strip() for x in ele.split(',')]
+                if (len(line_list) != 2):
+                    sys.stderr.write('Length of read line is not 2\n')
+                    sys.exit(1)
                 ibans.append(line_list)
         f.close()
-    # print(str(args.test))
-
-    # iban = args.iban
-    # country = args.country
 
     for element in ibans:
-        print(str(element))
+        print('\n' + str(element))
         iban = element[0].replace(" ", "")
         if validate_iban(iban, element[1]) == 0:
-            print('IBAN is NOT valid')
+            print(f'{bcolors.FAIL}IBAN is NOT valid{bcolors.ENDC}')
         else:
-            print('IBAN is valid')
+            print(f'{bcolors.OKGREEN}IBAN is valid{bcolors.ENDC}')
 
-    # delete spaces, check is 2 args per line - read from file; clean new line
-
+# UNIT TESTS
 class TestIban(unittest.TestCase):
     def setUp(self):
         iban_countries  = [['United Kingdom','GB','22'], ['Ukraine','UA','29']]
