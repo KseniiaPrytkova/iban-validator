@@ -1,4 +1,4 @@
-import argparse
+import sys, argparse
 
 iban_countries = []
 
@@ -22,15 +22,17 @@ def modify_iban_for_analysis(iban):
     return int("".join(iban_rearranged))
 
 def validate_iban(iban, given_country):
-    print (given_country)
+    country_found = False
     # Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid
     for country in iban_countries:
         if country[0] == given_country:
+            country_found = True
             if (len(iban)) != int(country[2]):
+                sys.stderr.write('Length of given IBAN number is incorrect\n')
                 return 0
-        else:
-            print('Given country is not supported')
-            return 0
+    if not country_found:
+        sys.stderr.write('Given country is not supported\n')
+        return 0
 
     # Generate IBAN check digits
     iban_check_digits = list(iban[:2] + ['0', '0'] + iban[4:])
@@ -39,18 +41,19 @@ def validate_iban(iban, given_country):
         res = '{:02}'.format(int(res))
     iban = ''.join(iban)
 
-    # analyzing the results of two algorithms: validating the IBAN and generate IBAN check digits
+    # Analyze the results of two algorithms: validate the IBAN and generate IBAN check digits
     if modify_iban_for_analysis(iban) % 97 != 1 and res != int(iban[2:4]):
         return 0
+    else:
+        return 1
     
 if __name__ == '__main__':
-    # iban = '   GB82 WEST 1234 5698 7654 32    '
-    # country = 'United Kingdom'
-
     parser = argparse.ArgumentParser()
-    parser.add_argument("iban", help="IBAN number itself (ex: 'GB82 WEST 1234 5698 7654 32')", type=str)
-    parser.add_argument("country", help="Service country (ex: 'United Kingdom')", type=str)
+    parser.add_argument("iban", help="IBAN number itself as a string (ex: 'GB82 WEST 1234 5698 7654 32')", type=str)
+    parser.add_argument("country", help="Service country as a string (ex: 'United Kingdom')", type=str)
+    parser.add_argument("-t", "--test", nargs=2, type=str, action="append")
     args = parser.parse_args()
+    print(str(args.test))
 
     iban = args.iban
     country = args.country
