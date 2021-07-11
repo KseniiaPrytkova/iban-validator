@@ -107,3 +107,8 @@ class TestIban(unittest.TestCase):
         actual = validate_iban('UA90305299299044004149123456789', 'Ukraine')
         expected = 0
         self.assertEqual(actual, expected)
+    def test_empty_params(self):
+        actual = validate_iban('', '')
+        expected = 0
+        self.assertEqual(actual, expected)
+

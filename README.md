@@ -59,10 +59,17 @@ $ python3.9 main.py 'GB82 WEST 1234 5698 7654 32' 'Samadfa' > /dev/null
 ```
 ![error](screenshots/error.png)
 
+## Run unit tests:
+```
+$ python3.9 -m unittest main.py
+```
+![tests](screenshots/tests.png)
+
 ## TODO:
 - ~~implement algorithm(s);~~ [**DONE** - can be optimised, 3d one can be added];
-- expand functionality to the list of IBAN's (interface architecture);~~ [**DONE**];
-- unit and/or other tests;
-- documentation; [**DONE**];
-- installation procedure; [**DONE**];
-- add the ability to use country codes along with full names.
+- expand functionality to the list of IBAN's (interface architecture);~~ [**DONE** ];
+- unit and/or other tests;~~ [**DONE** ];
+- documentation; [**DONE** ];
+- installation procedure; [**DONE** ];
+- add the ability to use country codes along with full names;
+- add more test cases.
