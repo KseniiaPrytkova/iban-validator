@@ -69,7 +69,7 @@ $ python3.9 -m unittest main.py
 - ~~implement algorithm(s);~~ [**DONE** - can be optimised, 3d one can be added];
 - ~~expand functionality to the list of IBAN's (interface architecture);~~ [**DONE** ];
 - ~~unit and/or other tests;~~ [**DONE** ];
-- ~~documentation; [**DONE** ];
-- ~~installation procedure; [**DONE** ];
+- ~~documentation;~~ [**DONE** ];
+- ~~installation procedure;~~ [**DONE** ];
 - add the ability to use country codes along with full names;
 - add more test cases.
