@@ -24,4 +24,3 @@ for i in range(len(data)):
     f.write("%s\n" % ",".join(list1))
 
 f.close()
-

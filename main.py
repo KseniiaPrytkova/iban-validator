@@ -111,4 +111,3 @@ class TestIban(unittest.TestCase):
         actual = validate_iban('', '')
         expected = 0
         self.assertEqual(actual, expected)
-

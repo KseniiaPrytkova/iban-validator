@@ -1,5 +1,5 @@
 # iban-validator
-OS: macOS
+**OS**: macOS
 
 ## Requirements:
 - python3.9 (https://www.python.org/downloads/release/python-390/)
