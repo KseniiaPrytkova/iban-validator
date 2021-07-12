@@ -73,3 +73,5 @@ $ python3.9 -m unittest main.py
 - ~~installation procedure;~~ [**DONE** ];
 - add the ability to use country codes along with full names;
 - add more test cases.
+
+https://en.wikipedia.org/wiki/International_Bank_Account_Number#Validating_the_IBAN
